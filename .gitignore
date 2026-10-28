@@ -10,3 +10,8 @@ npm-debug.log*
 dev-dist
 *.tsbuildinfo
 .claude
+.vscode
+.idea
+.firebase
+firebase-debug.log
+firestore-debug.log

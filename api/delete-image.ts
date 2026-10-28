@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { v2 as cloudinary } from 'cloudinary'
-import { getCallerFromRequest } from './_lib/firebaseAdmin'
+import { getCallerFromRequest } from './_lib/firebaseAdmin.js'
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
