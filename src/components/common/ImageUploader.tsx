@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { Camera } from 'lucide-react'
 import { uploadProductImage, thumbnailUrl } from '@/utils/cloudinary'
 
 interface ImageUploaderProps {
@@ -45,7 +46,7 @@ export function ImageUploader({ imageUrl, onUploaded }: ImageUploaderProps) {
       >
         {imageUrl && <img src={thumbnailUrl(imageUrl)} alt="Foto del producto" />}
         <div className="overlay-label" style={{ position: imageUrl ? 'absolute' : 'relative' }}>
-          <span>📷</span>
+          <Camera size={26} strokeWidth={1.8} />
           <span>{uploading ? 'Subiendo...' : imageUrl ? 'Cambiar foto' : 'Subir foto'}</span>
         </div>
       </button>

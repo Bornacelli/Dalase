@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
+import { LogOut } from 'lucide-react'
 import { signOut } from '@/firebase/auth'
 import { useAuth } from '@/context/AuthContext'
 
@@ -13,9 +14,9 @@ export function AdminLayout() {
           type="button"
           onClick={() => signOut()}
           aria-label="Salir"
-          style={{ background: 'none', border: 'none', color: '#fff', fontSize: '1.2rem' }}
+          style={{ background: 'none', border: 'none', color: '#fff', display: 'flex' }}
         >
-          ⏻
+          <LogOut size={20} strokeWidth={2} />
         </button>
       </header>
 

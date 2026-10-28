@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { X } from 'lucide-react'
 import type { Category } from '@/types/category'
 import type { Product, ProductInput } from '@/types/product'
 import { ImageUploader } from '@/components/common/ImageUploader'
@@ -31,8 +32,8 @@ export function ProductForm({ product, categories, onClose, onSaved }: ProductFo
     setError(null)
 
     const priceNumber = Number(price)
-    if (!name.trim() || !categoryId || !imageUrl || !priceNumber || priceNumber <= 0) {
-      setError('Completa nombre, precio, categoría y foto.')
+    if (!name.trim() || !priceNumber || priceNumber <= 0) {
+      setError('Completa el nombre y el precio.')
       return
     }
 
@@ -70,7 +71,7 @@ export function ProductForm({ product, categories, onClose, onSaved }: ProductFo
         <div className="form-panel-header">
           <h2>{product ? 'Editar producto' : 'Nuevo producto'}</h2>
           <button type="button" className="btn-icon btn-icon-outline" onClick={onClose} aria-label="Cerrar">
-            ✕
+            <X size={18} strokeWidth={2.2} />
           </button>
         </div>
 
@@ -113,13 +114,10 @@ export function ProductForm({ product, categories, onClose, onSaved }: ProductFo
               <select
                 id="product-category"
                 className="select"
-                required
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
               >
-                <option value="" disabled>
-                  Elige una
-                </option>
+                <option value="">Sin categoría</option>
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.name}

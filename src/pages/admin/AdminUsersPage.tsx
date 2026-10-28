@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import { Plus, Trash2 } from 'lucide-react'
 import { subscribeUsers, createAdminUser, deleteAdminUser } from '@/firebase/users'
 import { useAuth } from '@/context/AuthContext'
 import { ConfirmDialog } from '@/components/common/ConfirmDialog'
@@ -88,7 +89,8 @@ export function AdminUsersPage() {
             </select>
           </div>
           <button type="submit" className="btn btn-primary" disabled={saving} style={{ marginBottom: 16 }}>
-            + Agregar usuario
+            <Plus size={18} strokeWidth={2.4} />
+            Agregar usuario
           </button>
         </div>
         {error && <p style={{ color: 'var(--color-danger)', fontSize: '0.85rem' }}>{error}</p>}
@@ -108,7 +110,7 @@ export function AdminUsersPage() {
                 aria-label={`Quitar a ${user.email}`}
                 onClick={() => setDeleteTarget(user)}
               >
-                🗑
+                <Trash2 size={16} strokeWidth={2} />
               </button>
             </div>
           )}

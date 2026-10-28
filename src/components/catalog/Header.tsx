@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Search, ShoppingCart } from 'lucide-react'
 import logo from '@/assets/logo.png'
 import { useCart } from '@/context/CartContext'
 
@@ -20,15 +21,12 @@ export function Header({ searchValue, onSearchChange, totalProducts }: HeaderPro
           <p>Catálogo virtual</p>
         </div>
         <Link to="/carrito" className="cart-button" aria-label="Ver carrito">
-          🛒
+          <ShoppingCart size={20} strokeWidth={2.2} />
           {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
         </Link>
       </div>
       <div className="search-bar">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-          <circle cx="11" cy="11" r="7" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
+        <Search size={16} strokeWidth={2.2} />
         <input
           type="search"
           placeholder={totalProducts ? `Buscar entre ${totalProducts} productos` : 'Buscar productos'}

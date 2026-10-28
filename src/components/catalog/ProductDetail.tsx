@@ -1,7 +1,8 @@
+import { ShoppingCart, X } from 'lucide-react'
 import type { Product } from '@/types/product'
 import { formatCOP } from '@/utils/currency'
-import { detailUrl } from '@/utils/cloudinary'
 import { useCart } from '@/context/CartContext'
+import { ProductImage } from '@/components/common/ProductImage'
 
 interface ProductDetailProps {
   product: Product
@@ -15,9 +16,9 @@ export function ProductDetail({ product, onClose }: ProductDetailProps) {
     <div className="detail-overlay" onClick={onClose}>
       <div className="detail-sheet" onClick={(e) => e.stopPropagation()}>
         <button type="button" className="btn-icon btn-icon-outline detail-close" onClick={onClose} aria-label="Cerrar">
-          ✕
+          <X size={18} strokeWidth={2.2} />
         </button>
-        <img src={detailUrl(product.imageUrl)} alt={product.name} className="detail-image" />
+        <ProductImage imageUrl={product.imageUrl} alt={product.name} className="detail-image" variant="detail" />
         <div className="detail-body">
           <h2>{product.name}</h2>
           <div className="detail-price">{formatCOP(product.price)}</div>
@@ -31,6 +32,7 @@ export function ProductDetail({ product, onClose }: ProductDetailProps) {
               onClose()
             }}
           >
+            <ShoppingCart size={18} strokeWidth={2.2} />
             Agregar al carrito
           </button>
         </div>

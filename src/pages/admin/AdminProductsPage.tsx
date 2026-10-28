@@ -1,14 +1,16 @@
 import { useMemo, useState } from 'react'
+import { Pencil, Plus, Search, Trash2 } from 'lucide-react'
 import { useProducts } from '@/hooks/useProducts'
 import { useCategories } from '@/hooks/useCategories'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useInfiniteScrollSentinel } from '@/hooks/useInfiniteScrollSentinel'
 import { deleteProductDoc } from '@/firebase/products'
-import { deleteProductImage, thumbnailUrl } from '@/utils/cloudinary'
+import { deleteProductImage } from '@/utils/cloudinary'
 import { formatCOP } from '@/utils/currency'
 import { ProductForm } from '@/components/admin/ProductForm'
 import { ConfirmDialog } from '@/components/common/ConfirmDialog'
 import { Spinner } from '@/components/common/Spinner'
+import { ProductImage } from '@/components/common/ProductImage'
 import type { Product } from '@/types/product'
 
 export function AdminProductsPage() {
@@ -29,7 +31,7 @@ export function AdminProductsPage() {
 
   const categoryNameById = useMemo(() => {
     const map = new Map(categories.map((c) => [c.id, c.name]))
-    return (id: string) => map.get(id) ?? '—'
+    return (id: string) => map.get(id) ?? 'Sin categoría'
   }, [categories])
 
   async function confirmDelete() {
@@ -60,14 +62,12 @@ export function AdminProductsPage() {
 
       <div className="admin-toolbar">
         <div className="search-bar">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-            <circle cx="11" cy="11" r="7" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
+          <Search size={16} strokeWidth={2.2} />
           <input placeholder="Buscar producto" value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
         <button type="button" className="btn btn-primary" onClick={() => setCreating(true)}>
-          + Nuevo producto
+          <Plus size={18} strokeWidth={2.4} />
+          Nuevo producto
         </button>
       </div>
 
@@ -94,10 +94,10 @@ export function AdminProductsPage() {
               {products.map((product) => (
                 <tr key={product.id}>
                   <td style={{ width: 56 }}>
-                    <img
-                      src={thumbnailUrl(product.imageUrl)}
+                    <ProductImage
+                      imageUrl={product.imageUrl}
                       alt={product.name}
-                      style={{ width: 40, height: 40, borderRadius: 8, objectFit: 'cover' }}
+                      className="admin-thumb"
                     />
                   </td>
                   <td>{product.name}</td>
@@ -112,7 +112,7 @@ export function AdminProductsPage() {
                         onClick={() => setEditingProduct(product)}
                         aria-label={`Editar ${product.name}`}
                       >
-                        ✎
+                        <Pencil size={16} strokeWidth={2} />
                       </button>
                       <button
                         type="button"
@@ -120,7 +120,7 @@ export function AdminProductsPage() {
                         onClick={() => setDeleteTarget(product)}
                         aria-label={`Borrar ${product.name}`}
                       >
-                        🗑
+                        <Trash2 size={16} strokeWidth={2} />
                       </button>
                     </div>
                   </td>
@@ -132,7 +132,7 @@ export function AdminProductsPage() {
           <div className="admin-mobile-list">
             {products.map((product) => (
               <div className="admin-list-item" key={product.id}>
-                <img src={thumbnailUrl(product.imageUrl)} alt={product.name} />
+                <ProductImage imageUrl={product.imageUrl} alt={product.name} className="admin-thumb" />
                 <div className="info">
                   <h3>{product.name}</h3>
                   <span>{formatCOP(product.price)}</span>
@@ -144,7 +144,7 @@ export function AdminProductsPage() {
                     onClick={() => setEditingProduct(product)}
                     aria-label={`Editar ${product.name}`}
                   >
-                    ✎
+                    <Pencil size={16} strokeWidth={2} />
                   </button>
                   <button
                     type="button"
@@ -152,7 +152,7 @@ export function AdminProductsPage() {
                     onClick={() => setDeleteTarget(product)}
                     aria-label={`Borrar ${product.name}`}
                   >
-                    🗑
+                    <Trash2 size={16} strokeWidth={2} />
                   </button>
                 </div>
               </div>

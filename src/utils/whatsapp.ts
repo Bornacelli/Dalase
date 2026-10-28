@@ -1,9 +1,17 @@
 import type { CartItem } from '@/types/cart'
 import { formatCOP } from './currency'
 
-export function buildWhatsappMessage(customerName: string, items: CartItem[], total: number): string {
+export function buildWhatsappMessage(
+  customerName: string,
+  storeName: string,
+  items: CartItem[],
+  total: number
+): string {
+  const greeting = storeName
+    ? `Hola, soy ${customerName || 'un cliente'} de la tienda ${storeName} y quiero hacer este pedido:`
+    : `Hola, soy ${customerName || 'un cliente'} y quiero hacer este pedido:`
   const lines = [
-    `Hola, soy ${customerName || 'un cliente'} y quiero hacer este pedido:`,
+    greeting,
     '',
     ...items.map(
       (item) => `• ${item.quantity} x ${item.name} - ${formatCOP(item.price * item.quantity)}`

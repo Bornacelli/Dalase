@@ -1,13 +1,17 @@
+import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { ArrowLeft, Trash2 } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 import { CartItemRow } from '@/components/cart/CartItemRow'
 import { CartOrderForm } from '@/components/cart/CartOrderForm'
+import { ConfirmDialog } from '@/components/common/ConfirmDialog'
 
 const DESKTOP_QUERY = '(min-width: 1024px)'
 
 export function CartPage() {
   const navigate = useNavigate()
-  const { items } = useCart()
+  const { items, clear } = useCart()
+  const [confirmingClear, setConfirmingClear] = useState(false)
 
   // En escritorio el carrito ya está visible como panel lateral del catálogo.
   if (typeof window !== 'undefined' && window.matchMedia(DESKTOP_QUERY).matches) {
@@ -24,9 +28,28 @@ export function CartPage() {
           onClick={() => navigate(-1)}
           aria-label="Volver"
         >
-          ←
+          <ArrowLeft size={18} strokeWidth={2.2} />
         </button>
-        <h1>Tu pedido</h1>
+        <h1 style={{ flex: 1 }}>Tu pedido</h1>
+        {items.length > 0 && (
+          <button
+            type="button"
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#fff',
+              opacity: 0.85,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+              fontSize: '0.82rem',
+            }}
+            onClick={() => setConfirmingClear(true)}
+          >
+            <Trash2 size={15} strokeWidth={2} />
+            Vaciar
+          </button>
+        )}
       </header>
 
       {items.length === 0 ? (
@@ -42,6 +65,19 @@ export function CartPage() {
       <div className="cart-footer">
         <CartOrderForm />
       </div>
+
+      {confirmingClear && (
+        <ConfirmDialog
+          title="Vaciar carrito"
+          message="¿Seguro que quieres quitar todos los productos del carrito?"
+          confirmLabel="Vaciar"
+          onCancel={() => setConfirmingClear(false)}
+          onConfirm={() => {
+            clear()
+            setConfirmingClear(false)
+          }}
+        />
+      )}
     </div>
   )
 }

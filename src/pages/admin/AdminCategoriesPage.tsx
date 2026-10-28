@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { Pencil, Plus, Trash2 } from 'lucide-react'
 import { useCategories } from '@/hooks/useCategories'
 import { createCategory, deleteCategoryDoc, updateCategory } from '@/firebase/categories'
 import { ConfirmDialog } from '@/components/common/ConfirmDialog'
@@ -57,7 +58,8 @@ export function AdminCategoriesPage() {
           />
         </div>
         <button type="submit" className="btn btn-primary" disabled={saving}>
-          + Agregar
+          <Plus size={18} strokeWidth={2.4} />
+          Agregar
         </button>
       </form>
 
@@ -92,7 +94,7 @@ export function AdminCategoriesPage() {
                   setEditingName(category.name)
                 }}
               >
-                ✎
+                <Pencil size={16} strokeWidth={2} />
               </button>
               <button
                 type="button"
@@ -100,7 +102,7 @@ export function AdminCategoriesPage() {
                 aria-label={`Borrar ${category.name}`}
                 onClick={() => setDeleteTarget(category)}
               >
-                🗑
+                <Trash2 size={16} strokeWidth={2} />
               </button>
             </div>
           </div>

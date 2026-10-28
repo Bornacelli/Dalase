@@ -1,14 +1,15 @@
+import { Minus, Plus, Trash2 } from 'lucide-react'
 import type { CartItem } from '@/types/cart'
 import { formatCOP } from '@/utils/currency'
-import { thumbnailUrl } from '@/utils/cloudinary'
 import { useCart } from '@/context/CartContext'
+import { ProductImage } from '@/components/common/ProductImage'
 
 export function CartItemRow({ item }: { item: CartItem }) {
   const { setQuantity, removeItem } = useCart()
 
   return (
     <div className="cart-item">
-      <img src={thumbnailUrl(item.imageUrl)} alt={item.name} className="cart-item-image" />
+      <ProductImage imageUrl={item.imageUrl} alt={item.name} className="cart-item-image" />
       <div className="cart-item-info">
         <h3>{item.name}</h3>
         <span>{formatCOP(item.price)} c/u</span>
@@ -20,7 +21,7 @@ export function CartItemRow({ item }: { item: CartItem }) {
           aria-label="Restar"
           onClick={() => setQuantity(item.productId, item.quantity - 1)}
         >
-          −
+          <Minus size={14} strokeWidth={2.5} />
         </button>
         <span>{item.quantity}</span>
         <button
@@ -29,7 +30,7 @@ export function CartItemRow({ item }: { item: CartItem }) {
           aria-label="Sumar"
           onClick={() => setQuantity(item.productId, item.quantity + 1)}
         >
-          +
+          <Plus size={14} strokeWidth={2.5} />
         </button>
       </div>
       <button
@@ -38,7 +39,7 @@ export function CartItemRow({ item }: { item: CartItem }) {
         aria-label={`Eliminar ${item.name}`}
         onClick={() => removeItem(item.productId)}
       >
-        🗑
+        <Trash2 size={18} strokeWidth={2} />
       </button>
     </div>
   )

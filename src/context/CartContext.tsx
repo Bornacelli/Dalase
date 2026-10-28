@@ -4,16 +4,20 @@ import type { Product } from '@/types/product'
 
 const STORAGE_KEY = 'dalase-cart'
 const NAME_STORAGE_KEY = 'dalase-customer-name'
+const STORE_NAME_STORAGE_KEY = 'dalase-store-name'
 
 interface CartState {
   items: CartItem[]
   customerName: string
+  storeName: string
   total: number
   itemCount: number
   addItem: (product: Product) => void
   removeItem: (productId: string) => void
   setQuantity: (productId: string, quantity: number) => void
+  getQuantity: (productId: string) => number
   setCustomerName: (name: string) => void
+  setStoreName: (name: string) => void
   clear: () => void
 }
 
@@ -28,9 +32,9 @@ function readStoredItems(): CartItem[] {
   }
 }
 
-function readStoredName(): string {
+function readStoredValue(key: string): string {
   try {
-    return localStorage.getItem(NAME_STORAGE_KEY) ?? ''
+    return localStorage.getItem(key) ?? ''
   } catch {
     return ''
   }
@@ -38,7 +42,8 @@ function readStoredName(): string {
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(readStoredItems)
-  const [customerName, setCustomerNameState] = useState<string>(readStoredName)
+  const [customerName, setCustomerNameState] = useState<string>(() => readStoredValue(NAME_STORAGE_KEY))
+  const [storeName, setStoreNameState] = useState<string>(() => readStoredValue(STORE_NAME_STORAGE_KEY))
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
@@ -47,6 +52,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem(NAME_STORAGE_KEY, customerName)
   }, [customerName])
+
+  useEffect(() => {
+    localStorage.setItem(STORE_NAME_STORAGE_KEY, storeName)
+  }, [storeName])
 
   function addItem(product: Product) {
     setItems((prev) => {
@@ -78,7 +87,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
       removeItem(productId)
       return
     }
-    setItems((prev) => prev.map((item) => (item.productId === productId ? { ...item, quantity } : item)))
+    setItems((prev) => {
+      const existing = prev.find((item) => item.productId === productId)
+      if (!existing) return prev
+      return prev.map((item) => (item.productId === productId ? { ...item, quantity } : item))
+    })
+  }
+
+  function getQuantity(productId: string) {
+    return items.find((item) => item.productId === productId)?.quantity ?? 0
   }
 
   function clear() {
@@ -91,12 +108,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const value: CartState = {
     items,
     customerName,
+    storeName,
     total,
     itemCount,
     addItem,
     removeItem,
     setQuantity,
+    getQuantity,
     setCustomerName: setCustomerNameState,
+    setStoreName: setStoreNameState,
     clear,
   }
 
