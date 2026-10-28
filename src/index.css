@@ -1112,10 +1112,19 @@ a {
 .form-row {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .form-row .field {
-  flex: 1;
+  flex: 1 1 140px;
+  min-width: 0;
+}
+
+.form-row .field .input,
+.form-row .field .select,
+.form-row .field .textarea {
+  width: 100%;
+  min-width: 0;
 }
 
 /* ---------- Confirm dialog ---------- */
